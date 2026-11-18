@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>Frontend Unit Tests — Student Workload Monitor</title>
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
+
+    <script src="https://unpkg.com/chai@4/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+
+    <script>
+        mocha.setup('bdd');
+        const { expect } = chai;
+
+        // Тестируемые чистые функции из логики фронтенда
+        function validateAssignmentHours(hours) {
+            const num = Number(hours);
+            return !Number.isNaN(num) && num >= 0.5 && num <= 200;
+        }
+
+        function filterAssignments(assignments, subjectId, status) {
+            return assignments.filter(a => {
+                const matchSubject = subjectId === "all" || a.subjectId === Number(subjectId);
+                const matchStatus = status === "all" || a.isCompleted === (status === "true");
+                return matchSubject && matchStatus;
+            });
+        }
+
+        function getRiskBadgeClass(riskLevel) {
+            return `risk-badge risk-${(riskLevel || "none").toLowerCase()}`;
+        }
+
+        // Набор модульных тестов (Unit Tests)
+        describe('Student Workload Monitor — Frontend Logic', function () {
+
+            describe('1. Валидация оценки трудозатрат (estimatedHours)', function () {
+                it('должна пропускать корректное значение (4.5 часа)', function () {
+                    expect(validateAssignmentHours(4.5)).to.be.true;
+                });
+
+                it('должна отклонять отрицательные значения и ноль', function () {
+                    expect(validateAssignmentHours(0)).to.be.false;
+                    expect(validateAssignmentHours(-3)).to.be.false;
+                });
+
+                it('должна отклонять значения больше 200 часов', function () {
+                    expect(validateAssignmentHours(250)).to.be.false;
+                });
+            });
+
+            describe('2. Фильтрация списка заданий (filterAssignments)', function () {
+                const mockAssignments = [
+                    { id: 1, subjectId: 10, title: 'Лаба 1', isCompleted: true },
+                    { id: 2, subjectId: 10, title: 'Лаба 2', isCompleted: false },
+                    { id: 3, subjectId: 20, title: 'Курсовая', isCompleted: false }
+                ];
+
+                it('должна возвращать все задания при фильтрах "all"', function () {
+                    const res = filterAssignments(mockAssignments, "all", "all");
+                    expect(res).to.have.lengthOf(3);
+                });
+
+                it('должна фильтровать только активные задания по выбранному предмету', function () {
+                    const res = filterAssignments(mockAssignments, "10", "false");
+                    expect(res).to.have.lengthOf(1);
+                    expect(res[0].title).to.equal('Лаба 2');
+                });
+            });
+
+            describe('3. Определение CSS-класса индикатора риска', function () {
+                it('должно возвращать корректный класс для High риска', function () {
+                    expect(getRiskBadgeClass('High')).to.equal('risk-badge risk-high');
+                });
+
+                it('должно возвращать класс risk-none, если прогноз отсутствует', function () {
+                    expect(getRiskBadgeClass(null)).to.equal('risk-badge risk-none');
+                });
+            });
+        });
+
+        mocha.run();
+    </script>
+</body>
+</html>
