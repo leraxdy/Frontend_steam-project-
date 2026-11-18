@@ -4,13 +4,17 @@
     --text: #1e293b;
     --muted: #64748b;
     --border: #e2e8f0;
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
+    --primary: #ed8ee3;
+    --primary-hover: #c775be;
     --danger: #dc2626;
     --success: #16a34a;
     --radius: 10px;
     --shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
 }
+
+
+
+
 
 * {
     box-sizing: border-box;
@@ -24,6 +28,12 @@ body {
     color: var(--text);
     line-height: 1.5;
     padding-bottom: 48px;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
 }
 
 .container {
@@ -38,6 +48,8 @@ body {
     border-bottom: 1px solid var(--border);
     padding: 16px 0;
     margin-bottom: 24px;
+    -webkit-box-shadow: 0px 9px 13px 1px #A7A7A7; 
+box-shadow: 0px 9px 13px 1px #A7A7A7;
 }
 
 .topbar-inner {
@@ -148,27 +160,27 @@ body {
 
 .risk-none {
     background: #e2e8f0;
-    color: #475569;
+    color: #80aff0;
 }
 
 .risk-low {
     background: #dcfce7;
-    color: #166534;
+    color: #419661;
 }
 
 .risk-medium {
     background: #fef9c3;
-    color: #854d0e;
+    color: #b87120;
 }
 
 .risk-high {
     background: #ffedd5;
-    color: #9a3412;
+    color: #b93710;
 }
 
 .risk-critical {
     background: #fee2e2;
-    color: #991b1b;
+    color: #bf2323;
 }
 
 /* Workspace 2-column */
@@ -383,13 +395,13 @@ input, select {
     padding: 2px 8px;
     border-radius: 6px;
     background: #e2e8f0;
-    color: #334155;
+    color: #4784d8;
     font-weight: 500;
 }
 
 .badge-hours {
     background: #dbeafe;
-    color: #1e40af;
+    color: #3867a8;
 }
 
 .assignment-actions {
