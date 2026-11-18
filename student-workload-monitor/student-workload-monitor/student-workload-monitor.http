@@ -1,0 +1,53 @@
+@baseUrl = http://localhost:8080
+
+### 1. Создать студента (ожидаем 201 Created)
+POST {{baseUrl}}/api/students
+Content-Type: application/json
+
+{
+  "fullName": "Олена Коваленко",
+  "email": "olena.kovalenko@example.com",
+  "academicGroup": "ІПЗ-31"
+}
+
+### 2. Проверка валидации студента (ожидаем 400 Bad Request)
+POST {{baseUrl}}/api/students
+Content-Type: application/json
+
+{
+  "fullName": "",
+  "email": "not-an-email",
+  "academicGroup": ""
+}
+
+### 3. Получить список всех студентов (ожидаем 200 OK)
+GET {{baseUrl}}/api/students
+
+### 4. Проверка GlobalExceptionHandler / 404 (несуществующий ID)
+GET {{baseUrl}}/api/students/99999
+
+### 5. Создать предмет (ожидаем 201 Created)
+POST {{baseUrl}}/api/subjects
+Content-Type: application/json
+
+{
+  "studentId": 1,
+  "name": "Інженерія програмного забезпечення",
+  "teacherName": "Петренко О.В.",
+  "totalCredits": 5
+}
+
+### 6. Создать задание по предмету (ожидаем 201 Created)
+POST {{baseUrl}}/api/assignments
+Content-Type: application/json
+
+{
+  "subjectId": 1,
+  "title": "Лабораторна робота №3",
+  "description": "Реалізація REST API та інтеграційні тести",
+  "dueDate": "2026-11-25T23:59:00Z",
+  "estimatedHours": 8
+}
+
+### 7. Получить прогноз / статистику нагрузки студента (ожидаем 200 OK)
+GET {{baseUrl}}/api/workload/forecast/1
